@@ -1,0 +1,57 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.card {
+  background-color: aquamarine;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  border-radius: 40px;
+  padding: 40px;
+}
+
+.card__heading {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons__item {
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px;
+  background-color: lightsalmon;
+  border-radius: 10px;
+  border: none;
+  transition: transform 0.1s ease-in-out;
+}
+
+.buttons__item:hover {
+  transform: scale(0.96);
+}
+.buttons__item:active {
+  transform: scale(1.04);
+}
+
+.buttons__item:not(:last-child) {
+  margin-bottom: 10px;
+}
