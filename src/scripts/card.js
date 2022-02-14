@@ -28,17 +28,23 @@ export function createCard(name, dict, items) {
 function createBtn(token, id, text, type = "", dict = {}) {
   const elem = el("button.buttons__item", { textContent: text });
   elem.addEventListener("click", () => {
+    elem.innerHTML = "";
+    elem.classList.add("buttons__item-disable");
+    elem.append(el("div.loader"));
     if (type) {
       let number = 0;
       if (dict.local) {
         number = getNumber(dict.local);
-        dict.elem.lastChild.textContent =
-          Number(dict.elem.lastChild.textContent) - 1;
       }
       if (dict.type) {
         number = Math.floor(Math.random() * 7);
       }
-      sendPhoto(token, id, links[type][number]);
+      sendPhoto(token, id, links[type][number], {
+        elem,
+        text,
+        currElem: dict.elem,
+        local: dict.local,
+      });
     } else {
       sendMessage(token, id, text);
     }
@@ -86,20 +92,20 @@ function reset(allItems) {
 
 function currItems() {
   const elements = el("div.all-items");
-  const leafs = el("span.all-items__item all-leaf", [
-    el("h4", { textContent: "Перьев: " }),
-    el("span", { textContent: getArrayLocal("leafs").length }),
-  ]);
-  const card = el("span.all-items__item all-card", [
-    el("h4", { textContent: "Маккарт: " }),
-    el("span", { textContent: getArrayLocal("maccards").length }),
-  ]);
-  const emotions = el("span.all-items__item all-emotions", [
-    el("h4", { textContent: "Эмоций: " }),
-    el("span", { textContent: getArrayLocal("emotions").length }),
-  ]);
+  const leafs = createTextRemain("Перьев: ", "leafs", "all-leaf");
+  const card = createTextRemain("Маккарт: ", "maccards", "all-card");
+  const emotions = createTextRemain("Эмоций: ", "emotions", "all-card");
   elements.append(leafs, card, emotions);
   return { elements, leafs, card, emotions };
+}
+
+function createTextRemain(text, local, lclass) {
+  const span = el("span", { textContent: getArrayLocal(local).length });
+  const elem = el(`span.all-items__item ${lclass}`, [
+    el("h4", { textContent: text }),
+    span,
+  ]);
+  return elem;
 }
 
 export function makeApp() {
@@ -178,10 +184,20 @@ function sendMessage(token, id, text) {
   );
 }
 
-function sendPhoto(token, id, url) {
+function sendPhoto(token, id, url, dict) {
   fetch(
     `https://api.telegram.org/bot${token}/sendPhoto?chat_id=${id}&photo=${url}`
-  );
+  ).then((e) => {
+    if (e.status === 200) {
+      if (dict.local) {
+        dict.currElem.lastChild.textContent =
+          Number(dict.currElem.lastChild.textContent) - 1;
+      }
+      dict.elem.innerHTML = "";
+      dict.elem.classList.remove("buttons__item-disable");
+      dict.elem.textContent = dict.text;
+    }
+  });
 }
 
 function getAllNames(dict) {

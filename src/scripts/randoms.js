@@ -34,7 +34,6 @@ function update(array, name) {
 
 export function getNumber(text) {
   const array = getArrayLocal(text);
-  console.log(text, array);
   const number = Math.floor(Math.random() * array.length);
   const getNumber = array[number];
   update(popNew(getNumber, array), text);
