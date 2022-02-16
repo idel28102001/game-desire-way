@@ -17,7 +17,7 @@
         "webpack-dev-server": "^4.7.4"
     },
     "scripts": {
-        "build": "webpack -mode=production --env prod",
+        "build": "webpack --mode=production --env prod",
         "dev": "webpack serve --mode=development"
     },
     "dependencies": {
