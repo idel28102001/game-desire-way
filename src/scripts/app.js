@@ -1,16 +1,191 @@
 import { el, setChildren } from "redom";
 import { makeApp } from "./card.js";
 import { resetNew, getStrLocal, update } from "./randoms";
+import { createStartedSecond } from "./tips.js";
+import { createModalCurr } from "./create";
 
 //makeApp()
 export function app() {
     return mainPage();
 }
 
+
+function madeBehave(array, cls, cond = true) {
+    array.forEach(e => {
+        if (cond) {
+            e.classList.add(cls);
+        } else {
+            e.classList.remove(cls);
+        }
+    });
+}
+
+function mmoveElements(array, behave) {
+    array.forEach(e => {
+        e.style.left = behave;
+    });
+}
+
+function createSecondOne() {
+
+
+    const { popup: popup1 } = createModalCurr('popup', 'Заголовок', 'Текст');
+    const { popup: popup2 } = createModalCurr('popup2', 'Заголовок', 'Текст');
+    const arr = [popup1, popup2];
+    const line = el("div.line");
+    let vw = Math.max(
+        document.documentElement.clientWidth || 0,
+        window.innerWidth || 0
+    );
+    const element = el("div.second-one");
+    element.style.left = `${-vw}px`;
+    if (popup1) {
+        popup1.style.left = `${-vw}px`;
+    }
+    document.body.appendChild(line);
+    let xElemStart = 0;
+    let xElemCurr = 0;
+    line.addEventListener("touchstart", (start) => {
+        xElemStart = start.touches[0]["clientX"];
+    });
+
+    const conds = {};
+    getStartedDict(conds);
+    element.append(...arr);
+
+    window.addEventListener('resize', e => {
+        line.classList.add('line-drag');
+        vw = Math.max(
+            document.documentElement.clientWidth || 0,
+            window.innerWidth || 0
+        );
+        xElemCurr = 0;
+        xElemStart = Number(line.style.left.slice(0, -2)) ? -Number(line.style.left.slice(0, -2)) : Number(line.style.left.slice(0, -2));
+        getStartedDict(conds);
+        if (conds['Вправо']) {
+            if (conds['Уперлись'] || !conds['Левая сторона']) {
+                createSits('Прижать вправо');
+            } else {
+                createSits("Двигать вправо");
+            }
+        } else {
+            if (conds['Уперлись'] || conds['Левая сторона']) {
+                createSits('Прижать влево');
+            } else {
+                createSits("Двигать влево");
+            }
+        }
+        line.classList.remove('line-drag');
+    });
+
+    function getStartedDict(conds) {
+        conds['Вправо'] = xElemCurr >= 0;
+        conds['Уперлись'] = Math.abs(xElemCurr) >= vw;
+        conds['Пересекли'] = Math.abs(xElemCurr) >= vw / 5;
+        conds['Левая сторона'] = Math.abs(xElemStart) <= vw / 5;
+    }
+
+    function createSits(sit) {
+        element.classList.remove('second-one-drag');
+        madeBehave(arr, 'popup-drag', false);
+        line.classList.remove('line-drag');
+        switch (sit) {
+            case 'Прижать влево':
+                element.classList.add('second-one-drag');
+                madeBehave(arr, 'popup-drag', true);
+                line.classList.add('line-drag');
+
+                element.style.left = `${-vw}px`;
+                mmoveElements(arr, `${-vw}px`);
+                line.style.left = 0;
+                break;
+            case 'Прижать вправо':
+                element.classList.add('second-one-drag');
+                madeBehave(arr, 'popup-drag', true);
+                line.classList.add('line-drag');
+
+                element.style.left = 0;
+                mmoveElements(arr, 0);
+                line.style.left = `${vw}px`;
+                break;
+            case "Двигать вправо":
+                element.style.left = `${xElemCurr - vw}px`;
+                mmoveElements(arr, `${xElemCurr - vw}px`);
+                line.style.left = `${xElemCurr}px`;
+                break;
+            case "Двигать влево":
+                element.style.left = `${xElemCurr}px`;
+                mmoveElements(arr, `${xElemCurr}px`);
+                line.style.left = `${vw+xElemCurr}px`;
+                break;
+        }
+    }
+
+    line.addEventListener("touchmove", (eStart) => {
+        console.log(vw);
+        xElemCurr = eStart.touches[0]["clientX"] - xElemStart;
+        getStartedDict(conds);
+        if (conds['Вправо']) {
+            if (conds['Уперлись'] || !conds['Левая сторона']) {
+                createSits('Прижать вправо');
+            } else {
+                createSits("Двигать вправо");
+            }
+        } else {
+            if (conds['Уперлись'] || conds['Левая сторона']) {
+                createSits('Прижать влево');
+            } else {
+                createSits("Двигать влево");
+            }
+        }
+    });
+
+
+
+
+    line.addEventListener("touchend", (end) => {
+        if (conds['Вправо']) {
+            if (conds['Пересекли'] || !conds['Левая сторона']) {
+                createSits('Прижать вправо');
+            } else {
+                createSits('Прижать влево');
+            }
+        } else {
+            if (conds['Пересекли']) {
+                createSits('Прижать влево');
+            } else {
+                createSits('Прижать вправо');
+            }
+        }
+
+        xElemStart = 0;
+        xElemCurr = 0;
+    });
+    return { element, vw, arr, line };
+}
+
 export function mainPage() {
-    const modal = createModale();
-    document.body.appendChild(modal);
-    const container = el("div.container");
+    let firstGame = document.querySelector(".first-game");
+    if (!firstGame) {
+        firstGame = el("div.first-game");
+    }
+
+    let secondGame = document.querySelector(".second-one");
+    let vw, arr, line;
+
+    if (!secondGame) {
+        const dictCurr = createSecondOne();
+        secondGame = dictCurr.element;
+        vw = dictCurr.vw;
+        arr = dictCurr.arr
+        line = dictCurr.line;
+        document.body.append(secondGame);
+    }
+    document.body.append(firstGame);
+
+    createStartedSecond(secondGame);
+
+    const container = el("div.container2");
     const btns = el("div.main-buttons");
 
     const start = el("button.main-buttons__item start-button", {
@@ -26,25 +201,28 @@ export function mainPage() {
         textContent: `Выход`,
     });
 
+    const modal = createModale();
+    firstGame.appendChild(modal.elem);
     settings.addEventListener("click", () => {
-        modal.classList.add("black-back-active");
-        const input = document.querySelector(".settings__input");
-        input.value = getStrLocal("telegramAPI");
+        modal.elem.classList.add("black-back-active");
+        modal.input.value = getStrLocal("telegramAPI");
+        modal.zoom.value = getStrLocal("zoomValue");
+        modal.inpZ.checked = getStrLocal("zoomCheck");
+        modal.inpM.checked = getStrLocal("mapCheck");
     });
 
     start.addEventListener("click", () => {
         if (!getStrLocal("telegramAPI")) {
             settings.click();
-            const input = document.querySelector(".settings__input");
-            input.classList.add("settings__input-danger");
+            modal.input.classList.add("settings__input-danger");
         } else {
             if (confirm("Начать новую игру?")) {
                 resetNew("leafs", 36);
                 resetNew("maccards", 50);
                 resetNew("emotions", 50);
-                document.body.innerHTML = "";
+                firstGame.innerHTML = "";
                 localStorage.removeItem("currGame");
-                document.body.appendChild(makeApp());
+                firstGame.appendChild(makeApp());
             }
         }
     });
@@ -55,8 +233,8 @@ export function mainPage() {
     }
 
     contin.addEventListener("click", () => {
-        document.body.innerHTML = "";
-        document.body.appendChild(makeApp());
+        firstGame.innerHTML = "";
+        firstGame.appendChild(makeApp());
     });
 
     exit.addEventListener("click", () => {
@@ -66,28 +244,71 @@ export function mainPage() {
     });
     btns.append(start, contin, settings, exit);
     container.append(btns);
+    firstGame.append(container);
     return container;
 }
 
 function createModale() {
+    const zoom = el("input.settings__input", {
+        placeHolder: "Ссылка на трансляцию",
+    });
+
     const block = el("div.block block-settings", { id: "block-modal" });
     const button = el("button.settings__button", { textContent: "Сохранить" });
+
     const input = el("input.settings__input", {
-        placeHolder: "API Telegram Ключ",
+        placeHolder: "Ключ",
     });
 
     input.addEventListener("input", () => {
         input.classList.remove("settings__input-danger");
     });
+
+    const inputZ = el("span.settings__slider round");
+
+    const inputM = el("span.settings__slider round");
+
+    const inpZoom = el("label.switch", [
+        el("input.settings__inp-zoom", { type: "checkbox" }),
+        inputZ,
+    ]);
+    const inpMap = el("label.switch", [
+        el("input.settings__inp-map", { type: "checkbox" }),
+        inputM,
+    ]);
+
+    const divZ = el("div.settings__label", [
+        el("span.setting__check-name", { textContent: "Отправлять ссылку" }),
+        inpZoom,
+    ]);
+    const divM = el("div.settings__label", [
+        el("span.setting__check-name", {
+            textContent: "Отправлять маршрутный лист",
+        }),
+        inpMap,
+    ]);
+
     block.append(
         el("div.settings", [
-            el("label.settings__label", { textContent: "API" }, input),
+            el("label.settings__label", [
+                el("span.settings__name", { textContent: "Ключ" }),
+                input,
+            ]),
+            el("label.settings__label", [
+                el("span.settings__name", { textContent: "Ссылка" }),
+                zoom,
+            ]),
+            divZ,
+            divM,
             button,
         ])
     );
 
     button.addEventListener("click", () => {
         update(input.value, "telegramAPI");
+        update(zoom.value, "zoomValue");
+        update(inpZoom.firstChild.checked, "zoomCheck");
+        update(inpMap.firstChild.checked, "mapCheck");
     });
 
     const cross = el("span.cross", { textContent: "x" });
@@ -101,5 +322,11 @@ function createModale() {
     block.addEventListener("click", (event) => {
         event._isClickWithinModal = true;
     });
-    return elem;
+    return {
+        elem,
+        input,
+        zoom,
+        inpZ: inpZoom.firstChild,
+        inpM: inpMap.firstChild,
+    };
 }

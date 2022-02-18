@@ -1,0 +1,330 @@
+.second-one.lock {
+    overflow: hidden;
+}
+
+.container-icons {
+    column-count: 3;
+}
+
+ul,
+li {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+.modal-btn {
+    display: inline-block;
+    font-size: 80px;
+    width: 1em;
+    height: 1em;
+    border: none;
+    background-color: transparent;
+    transition: transform 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: rgb(106, 108, 240);
+    color: white;
+    border: none;
+    font-size: 20px;
+    padding: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.modal-btn:hover {
+    transform: translate(0.99, 0.99);
+}
+
+.modal-btn:active {
+    transform: translate(1.5, 1.5);
+}
+
+.second-one {
+    overflow: auto;
+    position: fixed;
+    background-color: #cdedfd;
+    background-image: linear-gradient( 319deg, #cdedfd 0%, #ffec82 37%, #ffcfd2 100%);
+}
+
+.modal-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-btn:nth-last-child(2n) {
+    margin-bottom: 15px;
+}
+
+.phraseF {
+    font-weight: 800;
+}
+
+.phraseS {
+    color: grey;
+}
+
+.colorF {
+    font-weight: 800;
+    color: white;
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.colorI {
+    margin-bottom: 10px;
+    line-height: 1.16em;
+}
+
+.colorI:nth-child(1) .colorF {
+    background-color: red;
+}
+
+.colorI:nth-child(2) .colorF {
+    background-color: orange;
+}
+
+.colorI:nth-child(3) .colorF {
+    background-color: yellow;
+}
+
+.colorI:nth-child(4) .colorF {
+    background-color: green;
+}
+
+.colorI:nth-child(5) .colorF {
+    background-color: cyan;
+}
+
+.colorI:nth-child(6) .colorF {
+    background-color: blue;
+}
+
+.colorI:nth-child(7) .colorF {
+    background-color: purple;
+}
+
+.accordion {
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+}
+
+.accordion-item {
+    color: white;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.accordion-item:nth-child(1),
+.color-1 {
+    background-color: #fff000;
+    background-image: linear-gradient(315deg, #fff000 0%, #ed008c 74%);
+}
+
+.accordion-item:nth-child(2),
+.color-2 {
+    background-color: #abe9cd;
+    background-image: linear-gradient(315deg, #abe9cd 0%, #3eadcf 74%);
+}
+
+.accordion-item:nth-child(3),
+.color-3 {
+    background-color: #7f53ac;
+    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
+}
+
+.accordion-item:nth-child(4),
+.color-4 {
+    background-color: #eaf818;
+    background-image: linear-gradient(315deg, #eaf818 0%, #f6fc9c 74%);
+    color: #000;
+}
+
+.accordion-item:nth-child(5),
+.color-5 {
+    background-color: #f8ef42;
+    background-image: linear-gradient(315deg, #f8ef42 0%, #0fd64f 74%);
+}
+
+.accordion-item-header {
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    min-height: 3.5rem;
+    line-height: 1.25rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.accordion-item-header::after {
+    content: "\002B";
+    font-size: 2rem;
+    position: absolute;
+    right: 1rem;
+}
+
+.accordion-item-header.active::after {
+    content: "\2212";
+}
+
+.accordion-item-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.accordion-item-body-content {
+    padding: 1rem;
+    line-height: 1.5rem;
+    border-top: 1px solid;
+    border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: opacity 0.4s ease 0s, visibility 0.4s ease 0s, transform 0.4s ease 0s;
+}
+
+.popup.open {
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup.open .popup__content {
+    transform: translate(0px, 0px);
+    opacity: 1;
+}
+
+.popup__body {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+}
+
+.popup__content {
+    background-color: #fff;
+    color: #000;
+    width: 80%;
+    min-width: 300px;
+    padding: 20px 15px;
+    position: relative;
+    opacity: 0;
+    transform: translate(0px, -100%);
+    transition: all 0.4s ease 0s;
+    border-radius: 10px;
+}
+
+.popup__area {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.popup__close {
+    background-color: transparent;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+    border: none;
+}
+
+.popup__title {
+    font-size: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.second-one-drag,
+.line-drag {
+    transition: left 0.2s ease-in-out;
+}
+
+.popup-drag {
+    transition: left 0.2s ease-in-out, opacity 0.4s ease 0s, visibility 0.4s ease 0s, transform 0.4s ease 0s;
+}
+
+.head-item-curr {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.content-item-curr {
+    font-size: 15px;
+    text-align: center;
+}
+
+.content-all-curr-number {
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.content-all-curr {
+    margin-bottom: 20px;
+}
+
+.content-all-curr:last-child {
+    margin-bottom: 0;
+}
+
+.main-item-curr {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-item-curr-extra,
+.item-item-curr,
+.item-item-curr-number,
+.content-item-curr-number {
+    font-size: 15px;
+    text-align: start;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    list-style-type: circle;
+}
+
+.item-item-curr-number,
+.content-item-curr-number {
+    list-style-type: decimal;
+}

@@ -1,5 +1,5 @@
 @media (max-width: 1600px) {
-    .container {
+    .container2 {
         padding-top: 30px;
         max-width: 1300px;
         width: 80%;
@@ -12,7 +12,7 @@
 }
 
 @media (max-width: 1100px) {
-    .container {
+    .container2 {
         padding-top: 30px;
         max-width: 1000px;
         width: 80%;
@@ -42,10 +42,31 @@
     .black-back-active .danger-modal {
         font-size: 32px;
     }
+    .settings__name {
+        font-size: 25px;
+    }
+    .setting__check-name {
+        font-size: 25px;
+        max-width: 80%;
+    }
+    .settings__label:not(:last-child) {
+        margin-bottom: 30px;
+    }
+    .settings__input {
+        font-size: 25px;
+    }
+    .settings__button {
+        font-size: 35px;
+    }
 }
 
 @media (max-width: 760px) {
-    .container {
+    .cross {
+        font-size: 50px;
+        right: 15px;
+        top: 15px;
+    }
+    .container2 {
         padding-top: 30px;
         max-width: 1000px;
         width: 80%;
@@ -71,11 +92,12 @@
     }
     .users__item {
         font-size: 20px;
-        padding: 15px 0;
+        padding: 15px 5px;
     }
     .block {
         max-width: 600px;
         width: 95%;
+        padding: 20px 5px;
     }
     .all-items {
         display: flex;
@@ -96,10 +118,21 @@
     .black-back-active .danger-modal {
         font-size: 20px;
     }
+    .name-user {
+        font-size: 16px;
+    }
+    .setting__check-name {
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 400px) {
-    .container {
+    .cross {
+        font-size: 40px;
+        right: 10px;
+        top: 10px;
+    }
+    .container2 {
         padding-top: 15px;
         max-width: 360px;
         width: 95%;
@@ -117,4 +150,25 @@
     .all-items__item {
         font-size: 25px;
     }
+}
+
+.block-loading {
+    width: 160px;
+    height: 160px;
+    position: relative;
+}
+
+.loader-get {
+    position: absolute;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+}
+
+.users-disable {
+    display: none;
+}
+
+.setting__check-name {
+    max-width: 60%;
 }

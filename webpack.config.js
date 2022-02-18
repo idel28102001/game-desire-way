@@ -20,6 +20,10 @@ module.exports = (env) => ({
             //       },
             //   },
             {
+                test: /\.(png|svg|jpg|jpeg|gif|ttf)$/i,
+                type: 'asset/resource',
+            },
+            {
                 test: /\.s?css$/i,
                 use: [
                     env.prod ? MiniCssExtractPlugin.loader : "style-loader",
@@ -27,6 +31,7 @@ module.exports = (env) => ({
                     "sass-loader",
                 ],
             },
+
         ],
     },
     plugins: [new HtmlWebpackPlugin(), new MiniCssExtractPlugin()],
