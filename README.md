@@ -9,8 +9,8 @@ All you need is create telegram bot with @BotFather and get token and name of th
   ```
   Then you need to build or run development mode
   ```
-    npm run dev    - Development mode
-    npm run build  - Build mode
+    npm run dev         - Development mode
+    npm run build       - Build mode
   ```
 
 # Путь-желаний.
@@ -24,6 +24,6 @@ All you need is create telegram bot with @BotFather and get token and name of th
   ```
   Потом вам нужно собратьи или запустить режим разработчика.
   ```
-    npm run dev    - Режим разработчика
-    npm run build  - Режим сборки
+    npm run dev          - Режим разработчика
+    npm run build        - Режим сборки
   ```
