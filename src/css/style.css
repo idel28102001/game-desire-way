@@ -789,3 +789,8 @@ input:checked+.settings__slider:before {
 .settings__button {
     font-size: 35px;
 }
+
+.danger {
+    border: 3px solid red;
+    border-radius: 5px;
+}

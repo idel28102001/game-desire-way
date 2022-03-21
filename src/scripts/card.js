@@ -10,9 +10,12 @@ import {
 } from "./randoms";
 import { mainPage } from "./app.js";
 import "babel-polyfill";
+import { token, telegramBot } from "..";
+
+
+
+
 export function createCard(name, dict, items) {
-    //const token = `5284035313:AAE15tnvTYt5FAquffIzhWYVAWyTEb3WB_Y`;
-    const token = getStrLocal("telegramAPI");
     return el("div.card", { id: dict.id }, [
         el("h3.card__heading", { textContent: name }),
         el("div.card__buttons buttons", [
@@ -124,7 +127,7 @@ function reset(allItems) {
         if (confirm("Вы уверены, что хотите выйти в главное меню?")) {
             const firstGame = document.querySelector(".first-game");
             firstGame.innerHTML = "";
-            firstGame.append(mainPage());
+            firstGame.append(mainPage(telegramBot));
         }
     });
     return element;
@@ -151,8 +154,6 @@ function createTextRemain(text, local, lclass) {
 export function makeApp() {
     const firstGame = document.querySelector(".first-game");
     firstGame.append(el("div.threads"));
-    //const token = `5284035313:AAE15tnvTYt5FAquffIzhWYVAWyTEb3WB_Y`;
-    const token = getStrLocal("telegramAPI");
     const container = el("div.container2");
     const cards = el("div.cards");
     const allItems = currItems();
@@ -164,7 +165,7 @@ export function makeApp() {
     ]);
     const currDict = getDictLocal("currGame");
     for (const [key, value] of Object.entries(currDict)) {
-        cards.append(createCard(key, value, allItems));
+        cards.append(createCard(key, value, allItems, token));
     }
     container.append(btns, allItems.elements, cards);
     return container;
@@ -370,7 +371,8 @@ function getAllNames(dict) {
     const newDict = {};
     for (const { message }
         of allNames) {
-        newDict[`${message.from.first_name} ${message.from.last_name}`] = {
+        const surname = message.from.last_name ? ` ${message.from.last_name}` : '';
+        newDict[`${message.from.first_name}${surname}`] = {
             id: message.from.id,
             username: message.from.username,
         };
